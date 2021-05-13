@@ -2,7 +2,7 @@
 
 # SFTP Diagram
 
-![image](Docs/SFTP-HLD.jpg)
+![image](docs/SFTP-HLD.jpg)
 
 [![Lint Status](https://github.com/DNXLabs/terraform-aws-transfer-server/workflows/Lint/badge.svg)](https://github.com/DNXLabs/terraform-aws-transfer-server/actions)
 [![LICENSE](https://img.shields.io/github/license/DNXLabs/terraform-aws-transfer-server)](https://github.com/DNXLabs/terraform-aws-transfer-server/blob/master/LICENSE)
