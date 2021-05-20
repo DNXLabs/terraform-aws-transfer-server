@@ -70,6 +70,11 @@ resource "aws_security_group_rule" "egress" {
 #}
 
 resource "null_resource" "update-vpc-endpoint-security-group" {
+
+   triggers = {
+    aws_transfer_server_id = aws_transfer_server.sftp.id
+  }
+
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOF
@@ -88,7 +93,6 @@ export AWS_ACCESS_KEY_ID=$${CREDENTIALS[0]}
 export AWS_SECRET_ACCESS_KEY=$${CREDENTIALS[1]}
 export AWS_SESSION_TOKEN=$${CREDENTIALS[2]}
 export AWS_SECURITY_TOKEN=$${CREDENTIALS[2]}
-
 
 echo $AWS_ACCESS_KEY_ID
 echo $AWS_SECRET_ACCESS_KEY
