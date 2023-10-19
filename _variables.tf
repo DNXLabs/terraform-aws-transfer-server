@@ -6,6 +6,12 @@ variable "dynamo_table_name" {
   default = "my-sftp-authentication-table"
 }
 
+variable "dynamo_users" {
+  type = list(any)
+  default = []
+}
+
+
 variable "creds_store" {
   default     = "secrets"
   description = "dynamo for dynamodb/ secrets for secret manager"
