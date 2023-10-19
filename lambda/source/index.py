@@ -21,7 +21,7 @@ def lambda_handler(event, context):
 
     if 'username' not in event or 'serverId' not in event:
         print("Incoming username or serverId missing  - Unexpected")
-        return response_data
+        return resp_data
 
     input_username = event['username']
     print("Username: {}, ServerId: {}".format(input_username, event['serverId']))
