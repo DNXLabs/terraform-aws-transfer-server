@@ -5,11 +5,13 @@ resource "aws_transfer_server" "sftp" {
   invocation_role        = aws_iam_role.sftp.arn
   endpoint_type          = var.endpoint_type
 
-  endpoint_details {
-    #vpc_endpoint_id = aws_vpc_endpoint.transfer.id
-    address_allocation_ids = var.address_allocation_ids
-    subnet_ids             = var.public_subnet_ids
-    vpc_id                 = var.vpc_id
+  dynamic "endpoint_details" {
+    for_each = var.endpoint_type == "VPC" ? [1] : []
+    content {
+      address_allocation_ids = var.address_allocation_ids
+      subnet_ids             = var.public_subnet_ids
+      vpc_id                 = var.vpc_id
+    }
   }
 
   tags = {
@@ -70,6 +72,8 @@ resource "aws_security_group_rule" "egress" {
 #}
 
 resource "null_resource" "update-vpc-endpoint-security-group" {
+
+  count = var.endpoint_type == "VPC" ? 1 : 0
 
    triggers = {
     aws_transfer_server_id = aws_transfer_server.sftp.id
