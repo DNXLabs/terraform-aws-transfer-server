@@ -164,13 +164,24 @@ resource "aws_lambda_permission" "allow_apigateway" {
 resource "aws_api_gateway_deployment" "prod" {
   rest_api_id = aws_api_gateway_rest_api.sftp-idp-secrets.id
   stage_name  = ""
-  depends_on  = [aws_api_gateway_integration.sftp-idp-secrets-integration]
-  variables = {
-    deployed_at = timestamp()
+
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_resource.sftp-idp-secrets-resource-config.id,
+      aws_api_gateway_resource.sftp-idp-secrets-resource-username.id,
+      aws_api_gateway_resource.sftp-idp-secrets-resource-users.id,
+      aws_api_gateway_resource.sftp-idp-secrets-resource-serverid.id,
+      aws_api_gateway_resource.sftp-idp-secrets-resource-servers.id,
+      aws_api_gateway_method.sftp-idp-secrets-method.id,
+      aws_api_gateway_integration.sftp-idp-secrets-integration.id,
+    ]))
   }
+
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on  = [aws_api_gateway_integration.sftp-idp-secrets-integration]
 }
 
 resource "aws_api_gateway_stage" "prod" {
